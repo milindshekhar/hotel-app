@@ -32,11 +32,15 @@ ngOnInit(): void {
   let id = this.activatedRoute.snapshot.paramMap.get('id');
   if(id)
   {
-    let reservation =  this.reservationService.getReservation(id);
-    if(reservation)
+    let reservation =  this.reservationService.getReservation(id).subscribe(reservation=>
     {
-      this.reservationForm.patchValue(reservation)
+      if(reservation)
+        {
+          this.reservationForm.patchValue(reservation)
+        }
     }
+    );
+   
   }
 }
 onSubmit()
@@ -48,11 +52,19 @@ onSubmit()
     if(id)
     {
       reservation.id = id;
-      this.reservationService.updateReservation(id,reservation);
+      this.reservationService.updateReservation(id,reservation).subscribe(res=>
+      {
+        console.log("Update Request Got Processed!")
+      }
+      );
     }
     else
     {
-      this.reservationService.addReservation(reservation);
+      this.reservationService.addReservation(reservation).subscribe(res=>
+      {
+        console.log("Post Request Got Processed!")
+      }
+      );
     }
   
     
